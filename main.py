@@ -34,11 +34,27 @@ def top_10_days_with_more_tweets(tweets):
   ordered_days = dict(sorted(counter.items(), key=lambda item: item[1]))
   return list(ordered_days.keys())[0:10]
 
+def top_10_hashtags(tweets):
+  counter = {}
+  for tweet in tweets:
+    
+    content = tweet["content"]
+    words = content.split()
+    hashtags = [word for word in words if word[0] == "#"]
+    for hashtag in hashtags:
+      if hashtag not in counter:
+        counter[hashtag] = 0
+      counter[hashtag] += 1
+  
+  ordered_hashtags = dict(sorted(counter.items(), key=lambda item: item[1]))
+  return list(ordered_hashtags.keys())[0:10]
+
 def main():
   tweets = [json.loads(line)
         for line in open(path, 'r', encoding='utf-8')]
-  #print(top_tweets(tweets))
-  #print(users_with_more_tweets(tweets))
+  print(top_tweets(tweets))
+  print(users_with_more_tweets(tweets))
   print(top_10_days_with_more_tweets(tweets))
+  print(top_10_hashtags(tweets))
 
 main()
